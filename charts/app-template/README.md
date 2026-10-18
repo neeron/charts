@@ -20,6 +20,11 @@ helm repo update
 helm install app-template neeron/app-template --version 0.1.0
 ```
 
+## Source Code
+
+* <https://github.com/neeron/charts/tree/main/charts/app-template>
+* <https://github.com/bjw-s-labs/helm-charts>
+
 ## Requirements
 
 | Repository | Name | Version |

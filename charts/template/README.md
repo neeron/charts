@@ -20,6 +20,10 @@ helm repo update
 helm install template neeron/template --version 0.1.0
 ```
 
+## Source Code
+
+* <https://github.com/neeron/charts/tree/main/charts/template>
+
 ## Values
 
 | Key | Type | Default | Description |
