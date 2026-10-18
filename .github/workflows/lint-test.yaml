@@ -22,8 +22,8 @@ jobs:
       - name: Run oxfmt check
         run: oxfmt --check .
 
-      - name: Run yamllint
-        run: yamllint .
+      - name: Run ryl
+        run: ryl check .
 
       - name: Run helm-docs check
         run: |

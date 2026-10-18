@@ -1,0 +1,43 @@
+exclude = """
+.git/
+charts/*/templates/
+site/
+.venv/
+"""
+
+[files]
+yaml = ["*.yaml", "*.yml", ".yamllint"]
+
+[lint.rules]
+anchors = "enable"
+colons = "enable"
+commas = "enable"
+document-end = "disable"
+document-start = "disable"
+empty-lines = "enable"
+empty-values = "disable"
+float-values = "disable"
+hyphens = "enable"
+indentation = "enable"
+key-duplicates = "enable"
+key-ordering = "disable"
+line-length = "disable"
+new-line-at-end-of-file = "enable"
+new-lines = "enable"
+octal-values = "disable"
+quoted-strings = "disable"
+trailing-spaces = "enable"
+truthy = "disable"
+
+[lint.rules.braces]
+max-spaces-inside = 1
+
+[lint.rules.brackets]
+max-spaces-inside = 1
+
+[lint.rules.comments]
+level = "warning"
+min-spaces-from-content = 1
+
+[lint.rules.comments-indentation]
+level = "warning"

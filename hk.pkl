@@ -9,7 +9,7 @@ steps {
     exclude = List("charts/**/templates/**", "charts/**/README.md", "docs/charts/**")
   }
 
-  ["yamllint"] = (Builtins.yamllint) {
+  ["ryl"] = (Builtins.ryl) {
     exclude = List("charts/**/templates/**")
   }
 
