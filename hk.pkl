@@ -19,7 +19,15 @@ steps {
   }
 
   ["helm-docs"] {
-    glob = List("charts/**/Chart.yaml", "charts/**/values.yaml", "charts/**/README.md.gotmpl")
-    check = "helm-docs"
+    fix = "helm-docs"
+    stage = List("charts/**/README.md")
+  }
+}
+
+hooks {
+  ["pre-commit"] {
+    stash = "git"
+    fix = true
+    stage = true
   }
 }
