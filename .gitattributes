@@ -1,0 +1,17 @@
+# Set default behaviour to automatically normalize line endings and use LF
+* text=auto eol=lf
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.gotmpl text eol=lf
+*.sh text eol=lf
+*.nu text eol=lf
+*.toml text eol=lf
+*.pkl text eol=lf
+
+# Helm template files
+*.tpl text eol=lf

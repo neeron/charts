@@ -1,0 +1,11 @@
+{
+  "ignorePatterns": [
+    "charts/**/templates/**",
+    "charts/**/README.md",
+    "docs/charts/**",
+    "CHANGELOG.md",
+    ".release-please-manifest.json",
+    "site/**",
+    ".venv/**"
+  ]
+}

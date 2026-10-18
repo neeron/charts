@@ -1,0 +1,85 @@
+# Default values for template.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- Number of desired pods
+replicaCount: 1
+
+image:
+  # -- Container image repository
+  repository: nginx
+  # -- Container image pull policy
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# -- Image pull secrets for private registries
+imagePullSecrets: []
+# -- String to partially override template.name
+nameOverride: ""
+# -- String to fully override template.fullname
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# -- Annotations to add to the pod
+podAnnotations: {}
+
+# -- Pod security context settings
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# -- Container security context settings
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  # -- Kubernetes service type
+  type: ClusterIP
+  # -- Service port
+  port: 80
+
+ingress:
+  # -- Enable ingress record generation
+  enabled: false
+  # -- Ingress class name
+  className: ""
+  # -- Annotations to add to ingress
+  annotations: {}
+  # -- Ingress host configuration
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  # -- Ingress TLS configuration
+  tls: []
+
+# -- Resource limits and requests for pods
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- Node labels for pod assignment
+nodeSelector: {}
+
+# -- Tolerations for pod assignment
+tolerations: []
+
+# -- Affinity for pod assignment
+affinity: {}

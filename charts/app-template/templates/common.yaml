@@ -1,0 +1,4 @@
+{{- if (hasKey .Subcharts "common") -}}
+{{- include "bjw-s.common.loader.init" . -}}
+{{- include "bjw-s.common.loader.all" . -}}
+{{- end -}}

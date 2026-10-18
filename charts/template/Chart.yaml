@@ -1,0 +1,13 @@
+apiVersion: v2
+name: template
+description: Template Helm chart. Not a useful one to pull.
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+home: https://github.com/neeron/charts
+sources:
+  - https://github.com/neeron/charts/tree/main/charts/template
+maintainers:
+  - name: neeron
+    url: https://github.com/NeuronButter
+icon: https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg

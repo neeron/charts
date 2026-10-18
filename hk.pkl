@@ -1,0 +1,25 @@
+amends "package://github.com/jdx/hk/releases/download/v2.6.0/hk@2.6.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.6.0/hk@2.6.0#/Builtins.pkl"
+
+steps {
+  ["trailing-whitespace"] = Builtins.trailing_whitespace
+  ["newlines"] = Builtins.newlines
+
+  ["oxfmt"] = (Builtins.oxfmt) {
+    exclude = List("charts/**/templates/**", "charts/**/README.md", "docs/charts/**")
+  }
+
+  ["yamllint"] = (Builtins.yamllint) {
+    exclude = List("charts/**/templates/**")
+  }
+
+  ["helm-lint"] {
+    glob = List("charts/**")
+    check = "helm lint charts/*"
+  }
+
+  ["helm-docs"] {
+    glob = List("charts/**/Chart.yaml", "charts/**/values.yaml", "charts/**/README.md.gotmpl")
+    check = "helm-docs"
+  }
+}

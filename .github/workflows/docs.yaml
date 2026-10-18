@@ -1,0 +1,58 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "README.md"
+      - "docs/**"
+      - "zensical.toml"
+      - "pyproject.toml"
+      - "mise.toml"
+      - "scripts/**"
+      - "charts/**/README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy-docs:
+    name: Build & Deploy Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup mise
+        uses: jdx/mise-action@v5
+
+      - name: Build Zensical Site
+        run: |
+          mise run docs
+
+      - name: Preserve Existing Helm HTTP Index from gh-pages
+        run: |
+          git fetch origin gh-pages:gh-pages 2>/dev/null || true
+          if git show gh-pages:index.yaml >/dev/null 2>&1; then
+            echo "==> Restoring index.yaml from gh-pages..."
+            git show gh-pages:index.yaml > site/index.yaml
+          fi
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,68 @@
+name: Lint and Test Charts
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  lint-code:
+    name: Lint code & configs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup mise
+        uses: jdx/mise-action@v5
+
+      - name: Run oxfmt check
+        run: oxfmt --check .
+
+      - name: Run yamllint
+        run: yamllint .
+
+      - name: Run helm-docs check
+        run: |
+          helm-docs
+          git diff --exit-code || (echo "helm-docs generated changes! Please run 'helm-docs' and commit the result." && exit 1)
+
+  lint-charts:
+    name: Lint & Test Helm Charts
+    runs-on: ubuntu-latest
+    needs: lint-code
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup mise
+        uses: jdx/mise-action@v5
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch || 'main' }} || true)
+          if [[ -n "$changed" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Changed charts: $changed"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No charts changed."
+          fi
+
+      - name: Run chart-testing (lint)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: ct lint --target-branch ${{ github.event.repository.default_branch || 'main' }}
+
+      - name: Create kind cluster
+        if: steps.list-changed.outputs.changed == 'true'
+        uses: helm/kind-action@v1.15.0
+
+      - name: Run chart-testing (install)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: ct install --target-branch ${{ github.event.repository.default_branch || 'main' }}

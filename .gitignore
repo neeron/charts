@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Helm
+charts/*/charts/*.tgz
+charts/*/charts/
+charts/*/tmpcharts/
+*.tgz
+
+# Zensical, documentation builds & Python
+site/
+docs/charts/
+.venv/
+__pycache__/
+*.py[cod]
+
+# mise & local tool configuration
+.mise.local.toml
+.hk/
+
+# Node / npm
+node_modules/

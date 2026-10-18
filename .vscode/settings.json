@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "*.gotmpl": "go-template",
+    "charts/**/templates/**/*.yaml": "helm-template",
+    "charts/**/templates/**/*.tpl": "helm-template"
+  },
+  "[helm-template]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[go-template]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  }
+}

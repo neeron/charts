@@ -1,0 +1,59 @@
+[project]
+site_name = "neeron/charts"
+site_url = "https://charts.neeron.me"
+site_description = "Helm Charts repository"
+site_author = "neeron"
+repo_name = "neeron/charts"
+repo_url = "https://github.com/neeron/charts"
+edit_uri = "edit/main/docs/"
+watch = ["README.md"]
+exclude_docs = """
+/charts/template.md
+/charts/app-template.md
+"""
+
+[project.theme]
+variant = "modern"
+language = "en"
+features = [
+  "content.code.copy",
+  "content.code.annotate",
+  "navigation.expand",
+  "navigation.indexes",
+  "navigation.sections",
+  "navigation.tabs",
+  "navigation.top",
+  "search.highlight",
+  "search.share",
+  "search.suggest",
+]
+
+[[project.theme.palette]]
+scheme = "slate"
+primary = "teal"
+accent = "orange"
+toggle = { icon = "material/brightness-4", name = "Switch to light mode" }
+
+[[project.theme.palette]]
+scheme = "default"
+primary = "teal"
+accent = "orange"
+toggle = { icon = "material/brightness-7", name = "Switch to dark mode" }
+
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+md_in_html = {}
+tables = {}
+pymdownx.details = {}
+pymdownx.highlight = { anchor_linenums = true }
+pymdownx.inlinehilite = {}
+pymdownx.snippets = {}
+pymdownx.tabbed = { alternate_style = true }
+pymdownx.superfences = { custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+] }
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/neeron/charts"

@@ -1,0 +1,111 @@
+name: Release Charts
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish-charts:
+    name: Package, Publish OCI & Deploy Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup mise
+        uses: jdx/mise-action@v5
+
+      - name: Login to GHCR (OCI)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Package Helm Charts
+        run: |
+          mkdir -p .cr-release-packages
+
+          for chart_dir in charts/*; do
+            if [ -d "$chart_dir" ]; then
+              echo "==> Building dependencies for $chart_dir..."
+              helm dependency build "$chart_dir" || true
+              echo "==> Packaging $chart_dir..."
+              helm package "$chart_dir" --destination .cr-release-packages
+            fi
+          done
+
+      - name: Push Charts to GHCR (OCI)
+        run: |
+          OWNER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          for pkg in .cr-release-packages/*.tgz; do
+            if [ -f "$pkg" ]; then
+              echo "==> Pushing $pkg to oci://ghcr.io/${OWNER_LOWER}/charts..."
+              helm push "$pkg" "oci://ghcr.io/${OWNER_LOWER}/charts"
+            fi
+          done
+
+      - name: Prepare HTTP Helm Repository & Documentation
+        run: |
+          # Fetch existing packages and index.yaml from gh-pages branch if available
+          git checkout gh-pages 2>/dev/null || git checkout -b gh-pages
+          mkdir -p .repo-cache
+          if [ -f index.yaml ]; then
+            cp index.yaml .repo-cache/
+          fi
+          if ls *.tgz 1> /dev/null 2>&1; then
+            cp *.tgz .repo-cache/
+          fi
+          git checkout -f "${{ github.ref_name }}"
+
+          # Copy newly built packages and cached historical packages
+          mkdir -p .cr-release-packages
+          if [ -d .repo-cache ]; then
+            cp -n .repo-cache/*.tgz .cr-release-packages/ 2>/dev/null || true
+            if [ -f .repo-cache/index.yaml ]; then
+              cp .repo-cache/index.yaml .cr-release-packages/
+            fi
+          fi
+
+          # Generate / merge Helm repository index
+          helm repo index .cr-release-packages --url https://charts.neeron.me --merge .cr-release-packages/index.yaml 2>/dev/null || \
+          helm repo index .cr-release-packages --url https://charts.neeron.me
+
+          # Build documentation with Zensical
+          mise run docs
+
+          # Integrate Helm HTTP repo artifacts into site root
+          cp .cr-release-packages/index.yaml site/
+          cp -n .cr-release-packages/*.tgz site/ 2>/dev/null || true
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Commit Updated Index to gh-pages branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout gh-pages 2>/dev/null || git checkout --orphan gh-pages
+          git reset
+          cp .cr-release-packages/index.yaml ./
+          cp -n .cr-release-packages/*.tgz ./ 2>/dev/null || true
+          git add index.yaml *.tgz 2>/dev/null || git add index.yaml
+          git commit -m "chore: update Helm HTTP repo index [skip ci]" || echo "No changes to index.yaml"
+          git push origin gh-pages || echo "Could not push to gh-pages branch"
