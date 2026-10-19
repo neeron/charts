@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint-code:
     name: Lint code & configs
@@ -15,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Setup mise
         uses: jdx/mise-action@v5
@@ -25,10 +31,18 @@ jobs:
       - name: Run ryl
         run: ryl check .
 
+      - name: Generate GitHub App Token
+        if: startsWith(github.head_ref, 'release-please-')
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
       - name: Run helm-docs check
-        run: |
-          helm-docs
-          git diff --exit-code || (echo "helm-docs generated changes! Please run 'helm-docs' and commit the result." && exit 1)
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: nu scripts/check-helm-docs.nu
 
   lint-charts:
     name: Lint & Test Helm Charts

@@ -27,6 +27,10 @@ ryl check .
 helm lint charts/*
 """
 
+[tasks.check-helm-docs]
+description = "Verify helm-docs are up to date and auto-fix on release PRs"
+run = "nu scripts/check-helm-docs.nu"
+
 [tasks.sync-docs]
 description = "Sync chart and root README files into docs directory"
 run = "nu scripts/sync-chart-docs.nu"
