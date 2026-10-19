@@ -3,5 +3,23 @@
   "extends": ["config:recommended", ":semanticCommits", ":disableDependencyDashboard"],
   "prBodyTemplate": "{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}{{{changelogs}}}{{{controls}}}{{{footer}}}",
   "prConcurrentLimit": 0,
-  "prHourlyLimit": 0
+  "prHourlyLimit": 0,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Bump Helm chart appVersion using inline comments",
+      "fileMatch": ["(^|/)Chart\\.yaml$"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>[a-z-]+?)\\s+depName=(?<depName>[^\\s]+)(?:\\s+versioning=(?<versioning>[^\\s]+))?\\s*\\r?\\n\\s*appVersion:\\s*[\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Trigger Release Please with conventional commit for cloudflared",
+      "matchFileNames": ["charts/cloudflared/**"],
+      "semanticCommitType": "feat",
+      "semanticCommitScope": "cloudflared"
+    }
+  ]
 }

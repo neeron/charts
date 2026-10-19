@@ -1,4 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "packages": {}
+  "packages": {
+    "charts/cloudflared": {
+      "release-type": "helm",
+      "package-name": "cloudflared",
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
 }

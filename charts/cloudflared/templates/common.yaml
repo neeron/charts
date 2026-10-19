@@ -1,0 +1,6 @@
+{{- if (hasKey .Subcharts "common") -}}
+  {{- $defaults := fromYaml (include "cloudflared.values.defaults" .) -}}
+  {{- $merged := mustMergeOverwrite $defaults (deepCopy .Values) -}}
+  {{- $_ := set . "Values" $merged -}}
+  {{- include "bjw-s.common.loader.all" . -}}
+{{- end -}}

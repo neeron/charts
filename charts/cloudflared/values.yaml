@@ -1,0 +1,36 @@
+# Default values for cloudflared.
+# This chart utilizes the bjw-s common library chart to generate Kubernetes resources.
+
+# -- Cloudflare Tunnel configuration
+cloudflare:
+  # -- Cloudflare account tag / ID
+  account: ""
+  # -- The name of the tunnel this instance will serve
+  tunnelName: ""
+  # -- The ID of the tunnel
+  tunnelId: ""
+  # -- The tunnel secret
+  secret: ""
+  # -- If defined, no secret is created by the chart and this existing secret is mounted instead
+  secretName: null
+  # -- If true, turn on WARP routing for TCP
+  enableWarp: false
+  # -- Ingress rules telling cloudflared which local service to route incoming requests to.
+  # A default catch-all rule (- service: http_status:404) is automatically appended.
+  ingress: []
+  # - hostname: tunnel.example.com
+  #   service: http://web-service:80
+  # - hostname: hello.example.com
+  #   service: hello_world
+
+# -- Number of desired pod replicas
+replicaCount: 2
+
+# -- Container image configuration
+image:
+  # -- Container image repository
+  repository: cloudflare/cloudflared
+  # -- Container image tag (defaults to chart appVersion)
+  tag: "{{ .Chart.AppVersion }}"
+  # -- Container image pull policy
+  pullPolicy: IfNotPresent

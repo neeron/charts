@@ -1,0 +1,20 @@
+apiVersion: v2
+name: cloudflared
+description: |
+  Cloudflare Tunnel (cloudflared) daemon as a chart. Created due to cloudflare/helm-charts being unmaintained, 0.1.0 is backwards-compatible with future versions best-effort.
+type: application
+version: 0.1.0
+appVersion: "2026.10.1"
+home: https://github.com/neeron/charts
+sources:
+  - https://github.com/neeron/charts/tree/main/charts/cloudflared
+  - https://github.com/cloudflare/cloudflared
+  - https://github.com/bjw-s-labs/helm-charts
+maintainers:
+  - name: neeron
+    url: https://github.com/NeuronButter
+icon: https://raw.githubusercontent.com/cloudflare/cloudflare-ingress-controller/master/docs/img/cloudflare.png
+dependencies:
+  - name: common
+    repository: https://bjw-s-labs.github.io/helm-charts
+    version: 5.3.0
