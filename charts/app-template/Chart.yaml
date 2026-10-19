@@ -15,4 +15,4 @@ icon: https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/icons/app-te
 dependencies:
   - name: common
     repository: https://bjw-s-labs.github.io/helm-charts
-    version: 3.4.0
+    version: 5.3.0
