@@ -36,11 +36,6 @@ def main [] {
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git add charts/**/README.md
         git commit -m "chore: regenerate helm-docs for release"
-
-        # Explicitly configure auth header with the app token so git push has write permissions
-        let auth = ($"x-access-token:($token)" | encode base64)
-        git config --local "http.https://github.com/.extraheader" $"AUTHORIZATION: basic ($auth)"
-
         git push origin $"HEAD:($head_ref)"
         print $"==> Successfully committed and pushed updated helm-docs to ($head_ref)."
         return
