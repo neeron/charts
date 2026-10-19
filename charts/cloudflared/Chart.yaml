@@ -3,7 +3,7 @@ name: cloudflared
 description: |
   Cloudflare Tunnel (cloudflared) daemon as a chart. Created due to cloudflare/helm-charts being unmaintained, 0.2.0 is backwards-compatible with future versions best-effort.
 type: application
-version: 0.2.0
+version: 0.3.0
 appVersion: "2026.10.1"
 home: https://github.com/neeron/charts
 sources:
