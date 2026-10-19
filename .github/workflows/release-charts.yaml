@@ -39,6 +39,11 @@ jobs:
 
           for chart_dir in charts/*; do
             if [ -d "$chart_dir" ]; then
+              chart_name=$(basename "$chart_dir")
+              if [ "$chart_name" = "app-template" ] || [ "$chart_name" = "template" ]; then
+                echo "==> Skipping excluded chart: $chart_name"
+                continue
+              fi
               echo "==> Building dependencies for $chart_dir..."
               helm dependency build "$chart_dir" || true
               echo "==> Packaging $chart_dir..."
@@ -72,10 +77,19 @@ jobs:
           # Copy newly built packages and cached historical packages
           mkdir -p .cr-release-packages
           if [ -d .repo-cache ]; then
+            rm -f .repo-cache/app-template*.tgz .repo-cache/template*.tgz
             cp -n .repo-cache/*.tgz .cr-release-packages/ 2>/dev/null || true
             if [ -f .repo-cache/index.yaml ]; then
               cp .repo-cache/index.yaml .cr-release-packages/
             fi
+          fi
+
+          # Ensure template packages are never present in release packages
+          rm -f .cr-release-packages/app-template*.tgz .cr-release-packages/template*.tgz
+
+          # Clean template charts from index.yaml if present
+          if [ -f .cr-release-packages/index.yaml ]; then
+            nu -c 'open .cr-release-packages/index.yaml | reject -o entries.app-template entries.template | to yaml | save -f .cr-release-packages/index.yaml' || true
           fi
 
           # Generate / merge Helm repository index
@@ -104,6 +118,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout gh-pages 2>/dev/null || git checkout --orphan gh-pages
           git reset
+          rm -f app-template*.tgz template*.tgz
+          git rm --cached -f app-template*.tgz template*.tgz 2>/dev/null || true
           cp .cr-release-packages/index.yaml ./
           cp -n .cr-release-packages/*.tgz ./ 2>/dev/null || true
           git add index.yaml *.tgz 2>/dev/null || git add index.yaml

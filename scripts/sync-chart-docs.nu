@@ -14,6 +14,9 @@ def main [] {
     if ($charts_dir | path exists) {
         for chart in (ls $charts_dir | where type == dir) {
             let chart_name = ($chart.name | path basename)
+            if $chart_name in ["app-template", "template"] {
+                continue
+            }
             let readme_path = ($chart.name | path join "README.md")
             if ($readme_path | path exists) {
                 print $"  -> Copying ($chart_name)/README.md to docs/charts/($chart_name).md"
