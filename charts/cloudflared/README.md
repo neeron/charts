@@ -36,10 +36,11 @@ helm install cloudflared neeron/cloudflared --version 0.2.0
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| cloudflare | object | `{"account":"","enableWarp":false,"ingress":[],"secret":"","secretName":null,"tunnelId":"","tunnelName":""}` | Cloudflare Tunnel configuration |
+| cloudflare | object | `{"account":"","enableWarp":false,"fallbackRoute":true,"ingress":[],"secret":"","secretName":null,"tunnelId":"","tunnelName":""}` | Cloudflare Tunnel configuration |
 | cloudflare.account | string | `""` | Cloudflare account tag / ID |
 | cloudflare.enableWarp | bool | `false` | If true, turn on WARP routing for TCP |
-| cloudflare.ingress | list | `[]` | Ingress rules telling cloudflared which local service to route incoming requests to. A default catch-all rule (- service: http_status:404) is automatically appended. |
+| cloudflare.fallbackRoute | bool | `true` | Whether to include a catch-all 404 fallback ingress route |
+| cloudflare.ingress | list | `[]` | Ingress rules telling cloudflared which local service to route incoming requests to. |
 | cloudflare.secret | string | `""` | The tunnel secret |
 | cloudflare.secretName | string | `nil` | If defined, no secret is created by the chart and this existing secret is mounted instead |
 | cloudflare.tunnelId | string | `""` | The ID of the tunnel |

@@ -16,12 +16,13 @@ cloudflare:
   # -- If true, turn on WARP routing for TCP
   enableWarp: false
   # -- Ingress rules telling cloudflared which local service to route incoming requests to.
-  # A default catch-all rule (- service: http_status:404) is automatically appended.
   ingress: []
   # - hostname: tunnel.example.com
   #   service: http://web-service:80
   # - hostname: hello.example.com
   #   service: hello_world
+  # -- Whether to include a catch-all 404 fallback ingress route
+  fallbackRoute: true
 
 # -- Number of desired pod replicas
 replicaCount: 2
