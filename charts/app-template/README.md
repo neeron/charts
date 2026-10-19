@@ -31,3 +31,6 @@ helm install app-template neeron/app-template --version 0.1.0
 |------------|------|---------|
 | https://bjw-s-labs.github.io/helm-charts | common | 5.3.0 |
 
+## License
+
+This work is licensed under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).

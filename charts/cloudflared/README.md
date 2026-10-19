@@ -49,3 +49,7 @@ helm install cloudflared neeron/cloudflared --version 0.2.0
 | image.repository | string | `"cloudflare/cloudflared"` | Container image repository |
 | image.tag | string | `"{{ .Chart.AppVersion }}"` | Container image tag (defaults to chart appVersion) |
 | replicaCount | int | `2` | Number of desired pod replicas |
+
+## License
+
+This work is licensed under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
