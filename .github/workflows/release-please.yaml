@@ -16,6 +16,8 @@ jobs:
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
       paths_released: ${{ steps.release.outputs.paths_released }}
+      pr: ${{ steps.release.outputs.pr }}
+      prs: ${{ steps.release.outputs.prs }}
     steps:
       - name: Generate GitHub App Token
         id: app-token
@@ -31,3 +33,21 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+      - name: Request review from NeuronButter
+        if: ${{ steps.release.outputs.pr != '' || (steps.release.outputs.prs != '' && steps.release.outputs.prs != '[]') }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          prs='${{ steps.release.outputs.prs }}'
+          if [ -n "$prs" ] && [ "$prs" != "[]" ]; then
+            for pr in $(echo "$prs" | jq -r '.[].number'); do
+              echo "Requesting review from NeuronButter on PR #$pr..."
+              gh pr edit "$pr" --add-reviewer NeuronButter || true
+            done
+          elif [ -n '${{ steps.release.outputs.pr }}' ]; then
+            pr='${{ fromJson(steps.release.outputs.pr).number }}'
+            echo "Requesting review from NeuronButter on PR #$pr..."
+            gh pr edit "$pr" --add-reviewer NeuronButter || true
+          fi

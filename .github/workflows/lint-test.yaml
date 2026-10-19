@@ -45,6 +45,14 @@ jobs:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: nu scripts/check-helm-docs.nu
 
+      - name: Request review from NeuronButter
+        if: startsWith(github.head_ref, 'release-please-')
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-reviewer NeuronButter || true
+
   lint-charts:
     name: Lint & Test Helm Charts
     runs-on: ubuntu-latest
