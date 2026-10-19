@@ -2,14 +2,14 @@
 
 Cloudflare Tunnel (cloudflared) daemon as a chart. Created due to cloudflare/helm-charts being unmaintained, 0.1.0 is backwards-compatible with future versions best-effort.
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.10.1](https://img.shields.io/badge/AppVersion-2026.10.1-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.10.1](https://img.shields.io/badge/AppVersion-2026.10.1-informational?style=flat-square)
 
 ## Installation
 
 ### OCI Artifact (Preferred)
 
 ```bash
-helm install cloudflared oci://ghcr.io/neeron/charts/cloudflared --version 0.1.0
+helm install cloudflared oci://ghcr.io/neeron/charts/cloudflared --version 0.2.0
 ```
 
 ### HTTP Repository
@@ -17,7 +17,7 @@ helm install cloudflared oci://ghcr.io/neeron/charts/cloudflared --version 0.1.0
 ```bash
 helm repo add neeron https://charts.neeron.me
 helm repo update
-helm install cloudflared neeron/cloudflared --version 0.1.0
+helm install cloudflared neeron/cloudflared --version 0.2.0
 ```
 
 ## Source Code

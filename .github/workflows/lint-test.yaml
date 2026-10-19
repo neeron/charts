@@ -17,9 +17,18 @@ jobs:
     name: Lint code & configs
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App Token
+        if: startsWith(github.head_ref, 'release-please-')
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
       - name: Checkout
         uses: actions/checkout@v7
         with:
+          token: ${{ steps.app-token.outputs.token || github.token }}
           ref: ${{ github.head_ref || github.ref }}
 
       - name: Setup mise
@@ -30,14 +39,6 @@ jobs:
 
       - name: Run ryl
         run: ryl check .
-
-      - name: Generate GitHub App Token
-        if: startsWith(github.head_ref, 'release-please-')
-        id: app-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ vars.BOT_APP_ID }}
-          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Run helm-docs check
         env:
