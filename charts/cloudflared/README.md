@@ -1,6 +1,6 @@
 # cloudflared
 
-Cloudflare Tunnel (cloudflared) daemon as a chart. Created due to cloudflare/helm-charts being unmaintained, 0.1.0 is backwards-compatible with future versions best-effort.
+Cloudflare Tunnel (cloudflared) daemon as a chart. Created due to cloudflare/helm-charts being unmaintained, 0.2.0 is backwards-compatible with future versions best-effort.
 
 ![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.10.1](https://img.shields.io/badge/AppVersion-2026.10.1-informational?style=flat-square)
 
