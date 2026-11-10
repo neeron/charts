@@ -6,7 +6,7 @@ helm-docs = "1.14.2"
 hk = "2.4.0"
 oxfmt = "0.73.0"
 uv = "0.13.1"
-nushell = "0.116.1"
+nushell = "0.117.0"
 # "pipx:yamale" = "6.1.0"
 
 [settings.pipx]
